@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shade Walk — shade-first walking routes</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap"
+  rel="stylesheet"
+/>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <h1>Shade Walk</h1>
+  </div>
+  <p class="tagline">Walking routes that stick to the shade.</p>
+</header>
+
+<div class="app-shell">
+
+  <aside class="panel" id="planning-panel" aria-label="Route planner">
+
+    <section class="panel-section">
+      <div class="field-row">
+        <div class="field" id="from-field">
+          <label for="from-input">From</label>
+          <input id="from-input" type="text" autocomplete="off" placeholder="Address, place, or click the map" />
+          <ul class="suggestions" id="from-suggestions" hidden></ul>
+        </div>
+        <button id="swap-btn" class="icon-btn" type="button" title="Swap from and to" aria-label="Swap from and to">⇄</button>
+      </div>
+      <div class="field" id="to-field">
+        <label for="to-input">To</label>
+        <input id="to-input" type="text" autocomplete="off" placeholder="Address, place, or click the map" />
+        <ul class="suggestions" id="to-suggestions" hidden></ul>
+      </div>
+      <button id="use-location-btn" class="text-btn" type="button">Use my current location for "From"</button>
+      <p class="hint">Tip: double-click the map to set a point — first double-click sets From, second sets To.</p>
+    </section>
+
+    <section class="panel-section">
+      <label for="datetime-input">When are you walking?</label>
+      <input id="datetime-input" type="datetime-local" />
+      <button id="now-btn" class="text-btn" type="button">Use current time</button>
+
+      <div class="sun-gauge-wrap">
+        <svg id="sun-gauge" viewBox="0 0 280 100" aria-hidden="true">
+          <path d="M10,70 Q140,4 270,70" class="sky-arc" />
+          <line x1="6" y1="70" x2="274" y2="70" class="horizon-line" />
+          <circle id="sun-dot" cx="20" cy="78" r="7" />
+        </svg>
+        <p id="sun-status-text" class="sun-status">Set a time to see the sun's position.</p>
+      </div>
+    </section>
+
+    <button id="find-route-btn" class="primary-btn" type="button">Find shaded routes</button>
+
+    <p id="status-line" class="status-line" aria-live="polite"></p>
+    <p id="error-box" class="error-box" hidden></p>
+  </aside>
+
+  <main id="map-wrap" aria-label="Map">
+    <div id="map"></div>
+
+    <div id="compare-overlay" class="map-overlay map-overlay-top" hidden>
+      <button id="back-to-planning-btn" class="overlay-btn" type="button">← Plan a new route</button>
+      <p class="overlay-hint">Tap a route to choose it</p>
+    </div>
+
+    <div id="selected-overlay" class="map-overlay map-overlay-bottom" hidden>
+      <div class="readouts">
+        <div class="readout">
+          <span class="readout-label">Distance</span>
+          <span class="readout-value" id="readout-distance">—</span>
+        </div>
+        <div class="readout">
+          <span class="readout-label">Walk time</span>
+          <span class="readout-value" id="readout-time">—</span>
+        </div>
+        <div class="readout">
+          <span class="readout-label">In shade</span>
+          <span class="readout-value" id="readout-shade">—</span>
+        </div>
+        <div class="readout">
+          <span class="readout-label">vs. fastest route</span>
+          <span class="readout-value" id="readout-detour">—</span>
+        </div>
+      </div>
+      <div class="legend">
+        <span class="legend-item"><span class="swatch swatch-shade"></span>Shaded path</span>
+        <span class="legend-item"><span class="swatch swatch-sun"></span>Sunlit path</span>
+        <span class="legend-item"><span class="swatch swatch-direct"></span>Fastest route</span>
+      </div>
+      <button id="change-route-btn" class="text-btn" type="button">Choose a different route</button>
+    </div>
+  </main>
+
+</div>
+
+<footer class="attribution">
+  <div class="footer-legend">
+    <span class="legend-chip"><span class="chip-dot chip-dot-fastest"></span>Fastest, regardless of shade</span>
+    <span class="legend-chip"><span class="chip-dot chip-dot-balanced"></span>Balanced between shade and speed</span>
+    <span class="legend-chip"><span class="chip-dot chip-dot-shade"></span>Most shade, regardless of speed</span>
+  </div>
+  <p class="attribution-text">
+    Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors ·
+    Shadow simulation by <a href="https://shademap.app" target="_blank" rel="noopener">ShadeMap</a>
+  </p>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-shadow-simulator/dist/leaflet-shadow-simulator.umd.min.js"></script>
+
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/solar.js"></script>
+<script src="js/geocode.js"></script>
+<script src="js/osm.js"></script>
+<script src="js/shade.js"></script>
+<script src="js/router.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

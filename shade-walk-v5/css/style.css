@@ -1,0 +1,596 @@
+:root {
+  --ink-900: #1c2227;
+  --ink-800: #262e35;
+  --ink-700: #333d45;
+  --ink-600: #455059;
+  --paper-100: #f4eee2;
+  --paper-200: #d9d2c3;
+  --sun-500: #e8973a;
+  --sun-300: #f3c988;
+  --shade-500: #5b8c7b;
+  --shade-300: #8fb6a8;
+  --clay-500: #c0584a;
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "IBM Plex Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  --radius: 10px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--ink-900);
+  color: var(--paper-100);
+  font-family: var(--font-body);
+}
+html {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+a {
+  color: var(--sun-300);
+}
+
+button {
+  font-family: var(--font-body);
+}
+
+:focus-visible {
+  outline: 2px solid var(--sun-300);
+  outline-offset: 2px;
+}
+
+/* ---------- Layout ---------- */
+
+.topbar {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.85rem 1.25rem;
+  background: var(--ink-800);
+  border-bottom: 1px solid var(--ink-700);
+  flex-shrink: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.brand-mark {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: conic-gradient(var(--sun-500) 0deg 180deg, var(--shade-500) 180deg 360deg);
+  flex-shrink: 0;
+}
+
+.topbar h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.tagline {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--paper-200);
+}
+
+.app-shell {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.panel {
+  width: 360px;
+  flex-shrink: 0;
+  background: var(--ink-800);
+  border-right: 1px solid var(--ink-700);
+  padding: 1.1rem 1.1rem 1.5rem;
+  overflow-y: auto;
+}
+.panel[hidden] {
+  display: none;
+}
+
+#map-wrap {
+  position: relative;
+  flex: 1;
+}
+#map {
+  position: absolute;
+  inset: 0;
+  background: var(--ink-700);
+}
+
+.attribution {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem 1rem;
+  padding: 0.45rem 1.25rem;
+  background: var(--ink-800);
+  border-top: 1px solid var(--ink-700);
+  flex-shrink: 0;
+}
+.attribution-text {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--paper-200);
+}
+
+.footer-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+.legend-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  color: var(--paper-200);
+  white-space: nowrap;
+}
+.chip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 1px var(--ink-600);
+}
+.chip-dot-fastest {
+  background: #ffffff;
+}
+.chip-dot-balanced {
+  background: var(--sun-500);
+}
+.chip-dot-shade {
+  background: var(--shade-500);
+}
+
+/* ---------- Panel sections ---------- */
+
+.panel-section {
+  padding: 0.95rem 0;
+  border-top: 1px solid var(--ink-700);
+}
+.panel-section:first-child {
+  border-top: none;
+  padding-top: 0.1rem;
+}
+
+.panel label {
+  display: block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--shade-300);
+  margin-bottom: 0.35rem;
+}
+
+.field {
+  position: relative;
+  margin-bottom: 0.6rem;
+}
+
+.field-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.4rem;
+}
+.field-row .field {
+  flex: 1;
+}
+
+input[type="text"],
+input[type="datetime-local"] {
+  width: 100%;
+  background: var(--ink-900);
+  border: 1px solid var(--ink-600);
+  color: var(--paper-100);
+  border-radius: var(--radius);
+  padding: 0.55rem 0.65rem;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+}
+input[type="text"]:focus,
+input[type="datetime-local"]:focus {
+  border-color: var(--sun-500);
+}
+input::placeholder {
+  color: var(--ink-600);
+}
+
+.suggestions {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 2px);
+  left: 0;
+  right: 0;
+  background: var(--ink-900);
+  border: 1px solid var(--ink-600);
+  border-radius: var(--radius);
+  list-style: none;
+  margin: 0;
+  padding: 0.2rem;
+  max-height: 220px;
+  overflow-y: auto;
+}
+.suggestions li {
+  padding: 0.5rem 0.55rem;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.suggestions li:hover,
+.suggestions li.is-active {
+  background: var(--ink-700);
+}
+
+.icon-btn {
+  background: var(--ink-700);
+  color: var(--paper-100);
+  border: 1px solid var(--ink-600);
+  border-radius: var(--radius);
+  width: 38px;
+  height: 38px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.icon-btn:hover {
+  background: var(--ink-600);
+}
+
+.text-btn {
+  background: none;
+  border: none;
+  color: var(--sun-300);
+  font-size: 0.82rem;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+}
+.text-btn:hover {
+  text-decoration-color: var(--sun-300);
+}
+
+.hint {
+  font-size: 0.76rem;
+  color: var(--paper-200);
+  margin: 0.5rem 0 0;
+}
+
+#now-btn {
+  display: block;
+  margin-top: 0.45rem;
+}
+
+/* ---------- Sun gauge ---------- */
+
+.sun-gauge-wrap {
+  margin-top: 0.6rem;
+}
+
+#sun-gauge {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.sky-arc {
+  fill: none;
+  stroke: var(--ink-600);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 4;
+}
+.horizon-line {
+  stroke: var(--ink-600);
+  stroke-width: 1.5;
+}
+#sun-dot {
+  fill: var(--sun-500);
+  filter: drop-shadow(0 0 6px rgba(232, 151, 58, 0.7));
+  transition: cx 0.4s ease, cy 0.4s ease, fill 0.4s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  #sun-dot {
+    transition: none;
+  }
+}
+
+.sun-status {
+  font-size: 0.82rem;
+  color: var(--paper-200);
+  margin: 0.45rem 0 0;
+}
+
+/* ---------- Map overlays (comparison + selected-route screens) ---------- */
+
+.map-overlay {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  z-index: 1000;
+  background: rgba(38, 46, 53, 0.92);
+  border: 1px solid var(--ink-700);
+  border-radius: var(--radius);
+  backdrop-filter: blur(4px);
+}
+
+.map-overlay-top {
+  top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.55rem 0.7rem;
+}
+
+.map-overlay-bottom {
+  bottom: 12px;
+  padding: 0.8rem 0.9rem 0.7rem;
+}
+
+.overlay-btn {
+  background: var(--ink-700);
+  color: var(--paper-100);
+  border: 1px solid var(--ink-600);
+  border-radius: var(--radius);
+  padding: 0.45rem 0.7rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.overlay-btn:hover {
+  background: var(--ink-600);
+}
+
+.overlay-hint {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--paper-200);
+  text-align: right;
+}
+
+/* The comparison screen's top bar spans the same corner Leaflet's default
+   zoom buttons sit in — hide them only there. Pinch/scroll zoom still work. */
+body.is-comparing .leaflet-control-zoom {
+  display: none;
+}
+
+/* On-map route option labels (Leaflet divIcon content, see app.js) */
+
+.route-option-label {
+  background: var(--ink-800);
+  border: 2px solid var(--paper-200);
+  border-radius: 9px;
+  padding: 0.35rem 0.55rem;
+  font-family: var(--font-body);
+  font-size: 0.74rem;
+  line-height: 1.25;
+  color: var(--paper-100);
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+.route-option-label strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+}
+.route-option-label .label-sub {
+  color: var(--paper-200);
+}
+
+/* ---------- Buttons / status ---------- */
+
+.primary-btn {
+  width: 100%;
+  background: var(--sun-500);
+  color: var(--ink-900);
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-top: 0.9rem;
+}
+.primary-btn:hover {
+  background: var(--sun-300);
+}
+.primary-btn:disabled {
+  background: var(--ink-600);
+  color: var(--paper-200);
+  cursor: not-allowed;
+}
+
+.status-line {
+  min-height: 1.2em;
+  font-size: 0.82rem;
+  color: var(--shade-300);
+  margin: 0.6rem 0 0;
+}
+
+.error-box {
+  background: rgba(192, 88, 74, 0.15);
+  border: 1px solid var(--clay-500);
+  color: var(--paper-100);
+  border-radius: var(--radius);
+  padding: 0.6rem 0.7rem;
+  font-size: 0.84rem;
+  margin-top: 0.6rem;
+}
+
+/* ---------- Results ---------- */
+
+#selected-overlay .readouts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+#selected-overlay .text-btn {
+  display: block;
+  margin-top: 0.65rem;
+}
+.readout {
+  background: var(--ink-900);
+  border: 1px solid var(--ink-700);
+  border-radius: var(--radius);
+  padding: 0.55rem 0.65rem;
+}
+.readout-label {
+  display: block;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--paper-200);
+}
+.readout-value {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  margin-top: 0.15rem;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 0.7rem;
+  font-size: 0.78rem;
+  color: var(--paper-200);
+}
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.swatch {
+  width: 16px;
+  height: 3px;
+  border-radius: 2px;
+  display: inline-block;
+}
+.swatch-shade {
+  background: var(--shade-500);
+}
+.swatch-sun {
+  background: var(--sun-500);
+}
+.swatch-direct {
+  background: #ffffff;
+  height: 0;
+  border-top: 2px dashed #ffffff;
+}
+
+/* ---------- Leaflet marker tweaks ---------- */
+
+.leaflet-container {
+  font-family: var(--font-body);
+}
+
+/* =====================================================================
+   Mobile (everything below intentionally lives in ONE block, after every
+   base rule above, so nothing here can be silently out-ordered by a
+   same-specificity rule defined later in the file)
+   ===================================================================== */
+@media (max-width: 760px) {
+  .app-shell {
+    flex-direction: column;
+    flex: 1 0 auto; /* let it (and the page) grow taller than the viewport instead of shrinking content into clipped overflow */
+  }
+  .panel {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--ink-700);
+    /* No internal scrolling on mobile — let the whole page scroll instead.
+       A clipped inner scroll box is exactly what was hiding the address
+       suggestions dropdown whenever the on-screen keyboard was open. */
+    max-height: none;
+    overflow-y: visible;
+    padding: 0.9rem 0.9rem 1.2rem;
+  }
+  #map-wrap {
+    flex: 1 0 auto;
+    min-height: 60vh;
+    min-height: 60dvh;
+  }
+
+  /* iOS Safari zooms the whole page in when focusing an input smaller
+     than 16px — this stops that jarring jump. */
+  input[type="text"],
+  input[type="datetime-local"] {
+    font-size: 16px;
+  }
+
+  .suggestions {
+    max-height: 40vh;
+  }
+
+  .topbar {
+    flex-wrap: wrap;
+    padding: 0.7rem 1rem;
+  }
+  .tagline {
+    width: 100%;
+  }
+
+  .attribution {
+    padding: 0.45rem 0.9rem;
+  }
+
+  .map-overlay {
+    left: 8px;
+    right: 8px;
+  }
+  .map-overlay-top {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .overlay-hint {
+    text-align: left;
+  }
+
+  .route-option-label {
+    font-size: 0.68rem;
+    padding: 0.3rem 0.45rem;
+  }
+  .route-option-label strong {
+    font-size: 0.76rem;
+  }
+
+  /* A few touch targets nudged closer to the ~44px comfort zone. */
+  .icon-btn {
+    width: 44px;
+    height: 44px;
+  }
+  .overlay-btn {
+    padding: 0.6rem 0.85rem;
+  }
+  .text-btn {
+    display: inline-block;
+    padding: 0.3rem 0;
+  }
+}
